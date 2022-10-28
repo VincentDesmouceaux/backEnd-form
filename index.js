@@ -1,11 +1,12 @@
 const express = require("express");
 const cors = require("cors");
-const API_KEY = "";
-const DOMAIN = "";
+const API_KEY = process.env.API_KEY;
+const DOMAIN = process.env.DOMAIN;
 const formData = require("form-data");
 const Mailgun = require("mailgun.js");
 const mailgun = new Mailgun(formData);
 const client = mailgun.client({ username: "api", key: API_KEY });
+require("dotenv").config();
 
 const app = express();
 app.use(cors());
@@ -15,7 +16,7 @@ app.post("/send-email", async (req, res) => {
   try {
     const messageData = {
       from: `${req.body.firstname} ${req.body.lastname} <${req.body.email}>`,
-      to: "bastien@lereacteur.io",
+      to: "desmontvincent@gmail.com",
       subject: "Mon mail custom",
       text: req.body.message,
     };
@@ -29,6 +30,6 @@ app.post("/send-email", async (req, res) => {
   }
 });
 
-app.listen(4000, () => {
+app.listen(process.env.PORT, () => {
   console.log("Server has started");
 });
